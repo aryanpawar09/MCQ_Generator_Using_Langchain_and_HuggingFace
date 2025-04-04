@@ -4,7 +4,6 @@
 
 An intelligent web application built using **LangChain**, **HuggingFace Transformers**, and **Streamlit**, designed to automatically generate multiple-choice questions (MCQs) from any uploaded `.pdf` or `.txt` document.
 
-![App Screenshot](https://mcqgeneratorusinglangchainandhuggingface-ggebgejxgzwg8obpjhfpw.streamlit.app/)
 
 ---
 
