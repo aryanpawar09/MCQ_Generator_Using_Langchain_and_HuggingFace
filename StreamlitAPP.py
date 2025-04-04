@@ -10,7 +10,7 @@ from src.mcqgenerator.MCQGenerator import generate_evaluate_chain
 from src.mcqgenerator.logger import logging
 
 #loading json file
-with open("/content/Response.json","r") as file:
+with open("Response.json","r") as file:
   RESPONSE_JSON = json.load(file)
 
 #creating a title for the app
@@ -39,10 +39,10 @@ with st.form("user_inputs"):
         text=read_file(uploaded_file)
         response=generate_evaluate_chain(
         {
-            "text": TEXT,
-            "number": NUMBER,
-            "subject":SUBJECT,
-            "tone": TONE,
+            "text": text,
+            "number": mcq_count,
+            "subject":subject,
+            "tone": tone,
             "response_json": json.dumps(RESPONSE_JSON)
         }
         )
