@@ -27,26 +27,34 @@ def read_file(file):
 
 def get_table_data(quiz_str):
     try:
-        # convert the quiz from a str to dict
-        quiz_dict=json.loads(quiz_str)
-        quiz_table_data=[]
+        # Step 1: Clean extra prefixes
+        quiz_str = quiz_str.strip()
+        if quiz_str.startswith("### RESPONSE_JSON"):
+            quiz_str = quiz_str.replace("### RESPONSE_JSON", "").strip()
 
-        # iterate over the quiz dictionary and extract the required information
-        for key,value in quiz_dict.items():
-            mcq=value["mcq"]
-            options=" || ".join(
+        # Step 2: Convert the cleaned string to dict
+        quiz_dict = json.loads(quiz_str)
+        quiz_table_data = []
+
+        # Step 3: Extract MCQs
+        for key, value in quiz_dict.items():
+            mcq = value["mcq"]
+            options = " || ".join(
                 [
-                    f"{option}-> {option_value}" for option, option_value in value["options"].items()
-
-                 ]
+                    f"{option}-> {option_value}"
+                    for option, option_value in value["options"].items()
+                ]
             )
-
-            correct=value["correct"]
-            quiz_table_data.append({"MCQ": mcq,"Choices": options, "Correct": correct})
+            correct = value["correct"]
+            quiz_table_data.append(
+                {"MCQ": mcq, "Choices": options, "Correct": correct}
+            )
 
         return quiz_table_data
 
     except Exception as e:
         traceback.print_exception(type(e), e, e.__traceback__)
+        print("🔴 Raw quiz_str (first 500 chars):", quiz_str[:500])
         return False
+
 
