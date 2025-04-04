@@ -20,7 +20,7 @@ st.title("MCQs Creator Application with Langchain")
 # Create a form using st.form
 with st.form("user_inputs"):
     # File Upload
-    uploaded_file = st.file_uploader("Upload a file", type=["txt"])
+    uploaded_file = st.file_uploader("Upload a file", type=["txt","pdf"])
 
     # Input Fields
     mcq_count = st.number_input("No. of MCQs", min_value=3, max_value=50)
