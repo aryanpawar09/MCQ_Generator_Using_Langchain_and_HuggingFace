@@ -1,4 +1,3 @@
-# MCQ_Generator_Using_Langchain_and_HuggingFace
 
 # 🧠 MCQs Creator Application with LangChain & HuggingFace
 
