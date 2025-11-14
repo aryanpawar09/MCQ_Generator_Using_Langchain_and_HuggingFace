@@ -1,15 +1,64 @@
-
 import os
 import json
 import pandas as pd
 import traceback
 from dotenv import load_dotenv
-from src.mcqgenerator.utils import read_file , get_table_data
+from src.mcqgenerator.utils import read_file, get_table_data
 from src.mcqgenerator.logger import logging
-from langchain_huggingface import HuggingFaceEndpoint
-from langchain.chains import LLMChain
-from langchain.chains import SequentialChain
-from huggingface_hub import login
+
+# robust imports for langchain (support multiple versions)
+PromptTemplate = None
+LLMChain = None
+SequentialChain = None
+
+try:
+    # common layout used in many examples
+    from langchain.prompts import PromptTemplate
+except Exception:
+    try:
+        from langchain.prompts.prompt import PromptTemplate
+    except Exception:
+        # fall back to top-level (some langchain distributions expose symbols directly)
+        try:
+            from langchain import PromptTemplate  # noqa
+        except Exception as e:
+            raise ImportError(
+                "PromptTemplate not found in the installed langchain package. "
+                "Install a compatible langchain version (see README). Original error: "
+                f"{e}"
+            )
+
+# LLMChain and SequentialChain: try a couple of plausible locations
+try:
+    from langchain.chains import LLMChain, SequentialChain
+except Exception:
+    try:
+        # sometimes LLMChain lives in langchain.chains.llm
+        from langchain.chains.llm import LLMChain
+        from langchain.chains.sequential import SequentialChain
+    except Exception:
+        try:
+            # last fallback - try top-level (rare)
+            from langchain import LLMChain, SequentialChain  # noqa
+        except Exception as e:
+            raise ImportError(
+                "LLMChain / SequentialChain not found in the installed langchain package. "
+                "Please install a compatible 'langchain' package into the environment running Streamlit. "
+                f"Original error: {e}"
+            )
+
+# huggingface and helper imports (unchanged)
+try:
+    from langchain_huggingface import HuggingFaceEndpoint
+except Exception:
+    raise ImportError("langchain_huggingface is not installed. pip install langchain-huggingface")
+
+try:
+    from huggingface_hub import login
+except Exception:
+    raise ImportError("huggingface_hub is not installed. pip install huggingface-hub")
+
+# PDF reader will be handled by utils.py (see recommended change)
 import PyPDF2
 try:
     from langchain.prompts import PromptTemplate
