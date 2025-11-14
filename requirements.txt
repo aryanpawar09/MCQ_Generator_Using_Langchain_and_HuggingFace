@@ -2,7 +2,7 @@ transformers
 huggingface_hub
 accelerate
 bitsandbytes
-langchain
+langchain==0.3.23
 langchain-community
 streamlit
 python-dotenv
