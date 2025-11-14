@@ -6,13 +6,18 @@ import traceback
 from dotenv import load_dotenv
 from src.mcqgenerator.utils import read_file , get_table_data
 from src.mcqgenerator.logger import logging
-
-from langchain.prompts import PromptTemplate
 from langchain_huggingface import HuggingFaceEndpoint
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from huggingface_hub import login
 import PyPDF2
+try:
+    from langchain.prompts import PromptTemplate
+except Exception:
+    try:
+        from langchain.prompts.prompt import PromptTemplate
+    except Exception:
+        from langchain import PromptTemplate
 
 load_dotenv()
 
